@@ -3,7 +3,7 @@ Real Name (GitHub Username) - netID - Role
 1) Andrew Eikel (Ace521) - ace337 - Back-End
 2) Tyrese Jackson (Virgo-web) - tjj217 - Front-End/back-End
 3) Xiang Chen (xinagchen) - xjc7 - Back-End
-4) Tyriee Love (tjl295) - tjl295 - Front-End
+4) Tyriee Love (tlove4) - tjl295 - Front-End
 5) Tebit Gang (christygtt) - tcg196 - Front-End
 
 **Languages:**
