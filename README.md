@@ -1,4 +1,4 @@
-**Group Members:**
+**Group Members:**  
 Real Name (GitHub Username) - netID - Email - Role
 1) Andrew Eikel (Ace521) - ace337 - andrew.eikel@gmail.com - Back-End
 2) Tyrese Jackson (Virgo-web) - tjj217 - tjj217@msstate.edu - Front-End/Back-End
