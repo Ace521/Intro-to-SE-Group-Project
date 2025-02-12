@@ -1,6 +1,6 @@
 **Group Members:**
 Real Name (GitHub Username) - netID - Email - Role
-1) Andrew Eikel (Ace521) - ace337 - ace337@msstate.edu - Back-End
+1) Andrew Eikel (Ace521) - ace337 - andrew.eikel@gmail.com - Back-End
 2) Tyrese Jackson (Virgo-web) - tjj217 - tjj217@msstate.edu - Front-End/back-End
 3) Xiang Chen (xinagchen) - xjc7 - xinagchen@gmail.com - Back-End
 4) Tyriee Love (tlove4) - tjl295 - tjl295@msstate.edu - Front-End
