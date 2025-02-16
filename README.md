@@ -1,12 +1,14 @@
 Group Members:
 Real Name (GitHub Username) - netID - Email - Role
 
-Andrew Eikel (Ace521) - ace337 - andrew.eikel@gmail.com - Back-End
-Tyrese Jackson (Virgo-web) - tjj217 - tjj217@msstate.edu - Front-End/Back-End
-Xiang Chen (xinagchen) - xjc7 - xinagchen@gmail.com - Back-End
-Tyriee Love (tlove4) - tjl295 - tjl295@msstate.edu - Front-End
-Tebit Gang (christygtt) - tcg196 - christygt2000@gmail.com - Front-End
-Languages: JavaScript, HTML, and CSS
+Andrew Eikel (Ace521) - ace337 - andrew.eikel@gmail.com - Back-End  
+Tyrese Jackson (Virgo-web) - tjj217 - tjj217@msstate.edu - Front-End/Back-End  
+Xiang Chen (xinagchen) - xjc7 - xinagchen@gmail.com - Back-End  
+Tyriee Love (tlove4) - tjl295 - tjl295@msstate.edu - Front-End  
+Tebit Gang (christygtt) - tcg196 - christygt2000@gmail.com - Front-End  
+
+**Languages:**
+JavaScript, HTML, and CSS
 
 **Techniques:**
 - We will use HTML and CSS to design the webpages to look clean and organized
