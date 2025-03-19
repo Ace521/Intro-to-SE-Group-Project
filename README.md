@@ -1,11 +1,11 @@
 ***
 **Group Members:**  
 Real Name (GitHub Username) - netID - Email - Role
-1) Andrew Eikel (Ace521) - ace337 - andrew.eikel@gmail.com - Back-End
-2) Tyrese Jackson (Virgo-web) - tjj217 - tjj217@msstate.edu - Front-End/Back-End
-3) Xiang Chen (xinagchen) - xjc7 - xinagchen@gmail.com - Back-End
-4) Tyriee Love (tlove4) - tjl295 - tjl295@msstate.edu - Front-End
-5) Tebit Gang (christygtt) - tcg196 - christygt2000@gmail.com - Front-End
+1) Andrew Eikel (Ace521) - ace337 - andrew.eikel@gmail.com - Fullstack/Tester
+2) Tyrese Jackson (Virgo-web) - tjj217 - tjj217@msstate.edu - Fullstack/Tester
+3) Xiang Chen (xinagchen) - xjc7 - xinagchen@gmail.com - Fullstack/Tester
+4) Tyriee Love (tlove4) - tjl295 - tjl295@msstate.edu - Fullstack/Tester
+5) Tebit Gang (christygtt) - tcg196 - christygt2000@gmail.com - Fullstack/Tester
 
 ***
 
