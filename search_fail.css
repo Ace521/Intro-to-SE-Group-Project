@@ -1,0 +1,80 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #f9f9f9;
+}
+
+/* Header Section */
+.header-container {
+    background-color: #ffcc00;
+    width: 100%;
+    padding: 20px 0;
+    text-align: center;
+}
+
+.header-container h1 {
+    margin: 0;
+    color: #333;
+}
+
+/* Search Bar Styling */
+.search-container {
+    margin: 20px;
+    text-align: center;
+}
+
+.search-container input {
+    padding: 10px;
+    width: 300px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.search-container button {
+    padding: 10px 20px;
+    background-color: #ffcc00;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.search-container button:hover {
+    background-color: #e0a800;
+}
+
+/* Search Results Styling */
+.search-results {
+    margin: 20px;
+    text-align: center;
+}
+
+/* No Results Message */
+.no-results-message {
+    display: none; /* Hidden by default */
+    text-align: center;
+    margin-top: 50px;
+}
+
+.no-results-message p {
+    font-size: 18px;
+    color: #ff4d4d;
+}
+
+.no-results-message button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.no-results-message button:hover {
+    background-color: #0056b3;
+}

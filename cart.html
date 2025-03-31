@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <div class="background-color">
+        <div class="home-button">
+            <button onclick="window.location.href='frontpage.html';">
+                <i class="fa fa-home" style="font-size: 24px;"></i> <!-- Home Icon -->
+            </button>
+        </div>
+        <center>
+            <h1>LoungeSloth</h1>
+        </center>
+    </div>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart</title>
+    <link rel="stylesheet" href="frontpage.css"> <!-- Link to your general styles -->
+    <link rel="stylesheet" href="cart.css"> <!-- Link to cart page specific styles -->
+    <script src="frontpage.js" defer></script> <!-- JavaScript for menu functionality -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+
+    <!-- HEADER SECTION -->
+    <div class="background-color">
+        <div class="header-container">
+            <!-- Cart Icon -->
+            <div class="cart-icon">
+                <i class="fa fa-shopping-cart" style="font-size:36px"></i>
+                <span class="cart-count" id="cart-count">3</span> <!-- Dynamically change this -->
+            </div>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="search-container">
+            <center>
+                <form class="search" id="search-form" action="#">
+                    <input type="text" placeholder="Search.." name="search" id="search-query">
+                    <button type="submit"><i class="fa fa-search"></i></button>
+                </form>
+            </center>
+        </div>
+
+        <!-- Hamburger Menu -->
+        <div class="hamburger-menu" onclick="toggleMenu()">
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
+        </div>
+
+        <!-- Dropdown Menu -->
+        <div id="dropdown-menu" class="dropdown-menu">
+            <ul>
+                <!-- Updated Account link to go to account.html -->
+                <li><a href="account.html">Account</a></li>
+                <li><a href="#" class="logout">Log Out</a></li>
+            </ul>
+        </div>
+
+        <div class="alert">
+            <div class="welcome-message">
+                Welcome,<span class="user-role" id="user-role">User</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Dynamically setting the role based on a variable (could be from a backend or local storage)
+        const userRole = "Buyer"; // Example role
+        document.getElementById("user-role").textContent = userRole;
+    </script>
+
+    <!-- CART PAGE CONTENT -->
+    <div class="cart-container">
+        <div class="cart-header">
+            <h1>Your Shopping Cart</h1>
+        </div>
+        <div id="cart-message" class="cart-message">
+            <p>No items in your cart.</p>
+        </div>
+        <div id="cart-items" class="cart-items">
+            <!-- Cart items will be displayed here -->
+        </div>
+
+        <div id="checkout-section" class="checkout-section">
+            <!-- Checkout button will be shown if there are items in the cart -->
+        </div>
+
+        <div class="return-home">
+            <!-- "Return to Home" button -->
+            <button onclick="window.location.href='frontpage.html';">Return to Home</button>
+        </div>
+    </div>
+
+    <script src="cart.js"></script> <!-- Link to your cart.js script -->
+
+    <!-- JavaScript to handle search failure -->
+    <script>
+        // Handle search submission and failure
+        document.getElementById("search-form").addEventListener("submit", function(event) {
+            event.preventDefault();
+            let searchQuery = document.getElementById("search-query").value.trim();
+
+            // Check if search query is empty or no results
+            if (searchQuery === "") {
+                alert("Please enter a search term.");
+                return;
+            }
+
+            // Simulate a failed search scenario
+            let searchResults = [];  // Empty array to simulate no results
+
+            if (searchResults.length === 0) {
+                // Redirect to search_fail.html if no results
+                window.location.href = "search_fail.html";
+            } else {
+                // Proceed to display results (not implemented in this example)
+                console.log("Displaying search results...");
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results - Not Found</title>
+    <link rel="stylesheet" href="frontpage.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f9f9f9;
+        }
+        .failure-box {
+            text-align: center;
+            padding: 30px;
+            background-color: #ffcc00;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 50%;
+        }
+        .failure-box p {
+            font-size: 18px;
+            margin: 20px 0;
+        }
+        .failure-box button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .failure-box button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="failure-box">
+        <p>Sorry, no results found for your search.</p>
+        <button onclick="goHome()">Return to Home</button>
+    </div>
+
+    <script>
+        function goHome() {
+            window.location.href = "frontpage.html";  // Redirect to homepage
+        }
+    </script>
+
+</body>
+</html>

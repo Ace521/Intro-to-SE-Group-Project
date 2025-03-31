@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account</title>
+    <link rel="stylesheet" href="account.css"> <!-- Link to custom styles -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    <div class="background-color">
+        <div class="home-button">
+            <button onclick="window.location.href='frontpage.html';">
+                <i class="fa fa-home" style="font-size: 24px;"></i> <!-- Home Icon -->
+            </button>
+        </div>
+        <center><h1>LoungeSloth</h1></center>
+    </div>
+
+    <div class="account-container">
+        <!-- Balance Section (Only for Buyers and Sellers) -->
+        <div class="account-box" id="balance-section" style="display: none;">
+            <h2>Balance</h2>
+            <p id="balance">$100.00</p> <!-- Dynamically populated with balance -->
+        </div>
+
+        <!-- User Role (No Edit Button) -->
+        <div class="account-box">
+            <h2>User Role</h2>
+            <p id="user-role">Buyer</p> <!-- Dynamically populated with user role -->
+        </div>
+
+        <!-- Username -->
+        <div class="account-box">
+            <h2>Username</h2>
+            <p id="username">user123</p> <!-- Dynamically populated with username -->
+        </div>
+
+        <!-- Password -->
+        <div class="account-box">
+            <h2>Password</h2>
+            <p id="password">********</p> <!-- Dynamically populated with password (hidden) -->
+        </div>
+        <button id="edit-username" class="edit-btn">Edit Information</button>
+        <button onclick="document.getElementById('id01').style.display='block'">Delete Account</button>
+
+<div id="id01" class="modal">
+  <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
+  <form class="modal-content" action="/action_page.php">
+    <div class="container">
+      <h1>Delete Account</h1>
+      <p>Are you sure you want to delete your account?</p>
+
+      <div class="clearfix">
+        <button type="button" class="cancelbtn">Cancel</button>
+        <button type="button" class="deletebtn">Delete</button>
+      </div>
+    </div>
+  </form>
+</div>
+        
+        <!-- Edit Form (Initially hidden) -->
+        <div id="edit-form" class="edit-form" style="display: none;">
+            <h3>Edit Information</h3>
+
+            <!-- Dynamic fields for username and password -->
+            <label for="new-username">Username:</label>
+            <input type="text" id="new-username" placeholder="Enter new username">
+
+            <label for="new-password">Password:</label>
+            <input type="password" id="new-password" placeholder="Enter new password">
+
+            <button id="save-changes" class="save-btn">Save Changes</button>
+            <button id="cancel-edit" class="cancel-btn">Cancel</button>
+        </div>
+    </div>
+
+    <script src="account.js"></script> <!-- External JS for handling edits -->
+
+    <script>
+        // JavaScript to conditionally show the balance section
+        const userRole = "Buyer"; // You can dynamically fetch this value based on your application
+
+        // Set the role on the page (you can replace "Buyer" with the actual role)
+        document.getElementById('user-role').textContent = userRole;
+
+        // Show the balance only for "Buyer" or "Seller"
+        if (userRole === "Buyer" || userRole === "Seller") {
+            document.getElementById('balance-section').style.display = "block";
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,177 @@
+  
+ .background-color {
+    background-color: #ffcc00;
+    padding: 10px;
+    max-width: 100%;
+    width: 100%;
+  }
+
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+  }
+  
+
+  .search-container {
+    margin: 20px;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .search-container input {
+    padding: 15px; /* Increase the padding to make the input larger */
+    width: 300px; /* Increase the width to make the input wider */
+    font-size: 18px; /* Increase the font size for larger text */
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+  
+.search button {
+    padding: 12px 20px; /* Adjust padding to make button bigger */
+    font-size: 18px; /* Adjust font size to match the input field */
+    background-color: #b6b6b6; /* Button background color */
+    color: white; /* Button text color */
+    border: none; /* Remove the border */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s ease; /* Smooth background color transition */
+}
+
+.search button:hover {
+    background-color: #727272; /* Darker green on hover */
+}
+
+  .hamburger-menu {
+    display: flex;
+    flex-direction: column;
+    width: 30px;
+    height: 25px;
+    justify-content: space-around;
+    cursor: pointer;
+    margin: 20px;
+    position: absolute;
+    top: 20px;
+    right: 20px; 
+    transition: transform 0.3s ease;
+  }
+  
+  .line {
+    height: 4px;
+    background-color: #333;
+    width: 100%;
+    border-radius: 2px;
+  }
+  
+  
+  .hamburger-menu:hover {
+    transform: scale(1.2);
+  }
+  
+  
+  .dropdown-menu {
+    display: none;
+    background-color: #333;
+    width: 200px;
+    margin-top: 10px; 
+    border-radius: 5px;
+    position: absolute;
+    top: 60px; 
+    right: 20px; 
+    z-index: 1000; 
+  }
+  
+  .dropdown-menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .dropdown-menu li {
+    text-align: center;
+  }
+  
+  .dropdown-menu a {
+    display: block;
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .dropdown-menu a:hover {
+    background-color: #444;
+  }
+  
+  .logout {
+    background-color: red; 
+    color: white;
+  }
+  
+  .logout:hover {
+    background-color: darkred; 
+  }
+  
+
+  .dropdown-menu.show {
+    display: block;
+  }
+
+.cart-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    font-size: 24px;
+    color: rgb(0, 0, 0);
+    cursor: pointer;
+}
+
+.cart-icon:hover {
+    transform:scale(1.2);
+    color: #383838
+}
+
+/* Cart Item Count (Badge) */
+.cart-count {
+    position: absolute;
+    top: -5px;
+    right: -10px;
+    background-color: red;
+    color: white;
+    font-size: 12px;
+    padding: 3px 6px;
+    border-radius: 50%;
+}
+
+/* Welcome message styling */
+.welcome-message {
+  font-size: 17px;
+  font-weight: bold;
+  color: #000000;
+  text-align: right;
+  padding: 25px;
+}
+
+/* User role styling */
+.user-role {
+  display: inline-block;
+  padding: 5px 15px;
+  margin-left: 5px;
+  background-color: #f1f1f1;  /* Light background */
+  border: 2px solid #333;  /* Square border around role */
+  border-radius: 4px;  /* Optional rounded corners */
+  font-size: 30px;
+  color: #333;
+  font-weight: normal;
+}
+
+/* Hover effect for the role */
+.user-role:hover {
+  background-color: #e0e0e0;  /* Slightly darker background on hover */
+  cursor: pointer;
+}

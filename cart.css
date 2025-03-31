@@ -1,0 +1,267 @@
+.background-color {
+    background-color: #ffcc00;  /* Yellow-orange background color */
+    padding: 10px;
+    max-width: 100%;
+    width: 100%;
+}
+
+/* Ensure body has no margin or padding and content is laid out vertically */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+}
+
+/* Header container with cart icon */
+.header-container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    position: relative;
+    padding-left: 10px; /* Adjust padding to account for home button */
+}
+
+/* Home button with icon */
+.home-button button {
+    font-size: 18px;
+    background-color: #ffcc00;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    margin-right: 15px;
+}
+
+.home-button button:hover {
+    background-color: #e0a800;
+}
+
+/* Home Icon */
+.home-button i {
+    font-size: 24px;
+    color: rgb(0, 0, 0);
+}
+
+/* Cart Icon */
+.cart-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    font-size: 24px;
+    color: rgb(0, 0, 0);
+    cursor: pointer;
+}
+
+.cart-icon:hover {
+    transform:scale(1.2);
+    color: #383838
+}
+
+/* Cart Item Count (Badge) */
+.cart-count {
+    position: absolute;
+    top: -5px;
+    right: -10px;
+    background-color: red;
+    color: white;
+    font-size: 12px;
+    padding: 3px 6px;
+    border-radius: 50%;
+}
+
+/* Search bar input */
+.search-container input {
+    padding: 15px;
+    width: 300px;
+    font-size: 18px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+/* Search button */
+.search button {
+    padding: 12px 20px;
+    font-size: 18px;
+    background-color: #b6b6b6;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.search button:hover {
+    background-color: #727272;
+}
+
+/* Hamburger menu style */
+.hamburger-menu {
+    display: flex;
+    flex-direction: column;
+    width: 30px;
+    height: 25px;
+    justify-content: space-around;
+    cursor: pointer;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    transition: transform 0.3s ease;
+}
+
+/* Hamburger lines */
+.line {
+    height: 4px;
+    background-color: #333;
+    width: 100%;
+    border-radius: 2px;
+}
+
+/* Hover effect on hamburger */
+.hamburger-menu:hover {
+    transform: scale(1.2);
+}
+
+/* Dropdown menu */
+.dropdown-menu {
+    display: none;
+    background-color: #333;
+    width: 200px;
+    margin-top: 10px;
+    border-radius: 5px;
+    position: absolute;
+    top: 60px;
+    right: 20px;
+    z-index: 1000;
+}
+
+/* Dropdown menu links */
+.dropdown-menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.dropdown-menu li {
+    text-align: center;
+}
+
+.dropdown-menu a {
+    display: block;
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.dropdown-menu a:hover {
+    background-color: #444;
+}
+
+/* Logout link */
+.logout {
+    background-color: red;
+    color: white;
+}
+
+.logout:hover {
+    background-color: darkred;
+}
+
+/* Display dropdown when active */
+.dropdown-menu.show {
+    display: block;
+}
+
+/* Welcome message */
+.welcome-message {
+    font-size: 17px;
+    font-weight: bold;
+    color: #000000;
+    text-align: right;
+    padding: 25px;
+}
+
+/* User role display */
+.user-role {
+    display: inline-block;
+    padding: 5px 15px;
+    margin-left: 5px;
+    background-color: #f1f1f1;
+    border: 2px solid #333;
+    border-radius: 4px;
+    font-size: 30px;
+    color: #333;
+    font-weight: normal;
+}
+
+/* Hover effect for user role */
+.user-role:hover {
+    background-color: #e0e0e0;
+    cursor: pointer;
+}
+
+/* Cart page container */
+.cart-container {
+    padding: 20px;
+    text-align: center;
+}
+
+/* Cart Header (Your Shopping Cart) with 3D Box Effect */
+.cart-header h1 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    background: linear-gradient(145deg, #f1f1f1, #e0e0e0);
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2), -4px -4px 10px rgba(255, 255, 255, 0.7);
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+/* Empty cart message styling */
+#cart-message {
+    font-size: 20px;
+    color: #333;
+}
+
+/* Cart item styling */
+.cart-item {
+    margin: 10px 0;
+    font-size: 18px;
+}
+
+/* Proceed to checkout button styling */
+#checkout-section button {
+    background-color: #98cd07;
+    padding: 15px 30px;
+    font-size: 18px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+#checkout-section button:hover {
+    background-color: #98cd07f5;
+}
+
+/* Return home button */
+.return-home button {
+    background-color: #98cd07;
+    padding: 15px 30px;
+    font-size: 18px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.return-home button:hover {
+    background-color: #98cd07d5;
+    transform: scale(1.1);
+    font-weight: bold;
+}

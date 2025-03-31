@@ -1,0 +1,146 @@
+<!<!DOCTYPE html>
+<html>
+<head>
+    <title>Home</title>
+    <div class="background-color">
+        <center>
+            <h1>LoungeSloth</h1>
+        </center>
+    </div>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="stylesheet" href="frontpage.css"> <!-- Fixed typo in link -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+
+    <div class="background-color">
+        <div class="header-container">
+            <!-- Cart Icon wrapped in anchor tag to link to cart.html, only visible if the role is "Buyer" -->
+            <a href="cart.html" id="cart-link" style="display: none;">
+                <div class="cart-icon">
+                    <i class="fa fa-shopping-cart" style="font-size:36px"></i>
+                    <span class="cart-count" id="cart-count">3</span>
+                </div>
+            </a>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="search-container">
+            <center>
+                <form class="search" id="search-form" onsubmit="handleSearch(event)">
+                    <input type="text" id="search-input" placeholder="Search.." name="search">
+                    <button type="submit"><i class="fa fa-search"></i></button>
+                </form>
+            </center>
+        </div>
+
+        <!-- Hamburger Menu -->
+        <div class="hamburger-menu" onclick="toggleMenu()">
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
+        </div>
+
+        <!-- Dropdown Menu -->
+        <div id="dropdown-menu" class="dropdown-menu">
+            <ul id="dropdown-list">
+                <!-- Menu items will be inserted here dynamically -->
+            </ul>
+        </div>
+
+        <script src="frontpage.js"></script>
+
+        <!-- Welcome Message -->
+        <div class="background-color">
+            <div class="welcome-message">
+                Welcome, <span class="user-role" id="user-role">User</span>
+            </div>
+        </div>
+
+        <script>
+            // Example: Dynamically setting the role based on a variable (could be from a backend or local storage)
+            const userRole = "Buyer"; // This can be dynamically set based on your authentication system
+
+            // Display the role on the page
+            document.getElementById("user-role").textContent = userRole;
+
+            // Show or hide the cart icon based on user role
+            if (userRole === "Buyer") {
+                document.getElementById("cart-link").style.display = "block";
+            } else {
+                document.getElementById("cart-link").style.display = "none";
+            }
+
+            // Handle search functionality
+            function handleSearch(event) {
+                event.preventDefault(); // Prevent the form from submitting
+
+                const searchTerm = document.getElementById('search-input').value.trim();
+                if (!searchTerm) {
+                    return; // Do nothing if the search term is empty
+                }
+
+                // Simulate search results (you can replace this with your actual search logic)
+                const searchResults = simulateSearch(searchTerm);
+
+                if (searchResults.length === 0) {
+                    // Redirect to the search failure page if no results are found
+                    window.location.href = "search_fail.html";
+                } else {
+                    // Proceed to display results (you can implement your result display here)
+                    alert("Found " + searchResults.length + " result(s).");
+                }
+            }
+
+            // Simulate a search function (replace with your actual search logic)
+            function simulateSearch(searchTerm) {
+                // Example static list of items (you can replace this with real data)
+                const items = ["Laptop", "Phone", "Tablet", "Headphones"];
+                return items.filter(item => item.toLowerCase().includes(searchTerm.toLowerCase()));
+            }
+
+            // Update the dropdown menu based on the user's role
+            const dropdownList = document.getElementById("dropdown-list");
+
+            // Function to create menu items
+            function createMenuItem(text, link = "#", className = "") {
+                const li = document.createElement("li");
+                const a = document.createElement("a");
+                a.href = link;
+                a.textContent = text;
+                if (className) a.classList.add(className); // Add class to the link if provided
+                li.appendChild(a);
+                dropdownList.appendChild(li);
+            }
+
+            // Dynamically update the dropdown menu based on user role
+            if (userRole === "Buyer" || userRole === "Admin") {
+                createMenuItem("Account", "account.html"); // Link to account page
+                createMenuItem("Log Out", "#", "logout-btn"); // Add 'logout-btn' class to "Log Out"
+            } else if (userRole === "Seller") {
+                createMenuItem("Account", "account.html"); // Link to account page
+                createMenuItem("Your Products", "#");
+                createMenuItem("Log Out", "#", "logout-btn"); // Add 'logout-btn' class to "Log Out"
+            }
+        </script>
+
+        <!-- CSS for red "Log Out" button -->
+        <style>
+            .logout-btn {
+                color: white;
+                background-color: red;
+                padding: 8px 16px;
+                border-radius: 4px;
+                text-align: center;
+                display: inline-block;
+                text-decoration: none;
+            }
+            .logout-btn:hover {
+                background-color: darkred;
+            }
+        </style>
+
+</body>
+</html>
