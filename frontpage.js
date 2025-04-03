@@ -10,3 +10,5 @@ function toggleMenu() {
   
   // Simulate adding items to the cart
   addToCart(0); 
+
+  
