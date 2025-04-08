@@ -1,0 +1,116 @@
+/* Reset & Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background: radial-gradient(circle at top left, #f7c600, #000000);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #000;
+    animation: fadeInBody 1s ease-in;
+}
+
+@keyframes fadeInBody {
+    from { opacity: 0; transform: scale(0.98); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+form {
+    background-color: #fff;
+    padding: 40px 35px;
+    border-radius: 25px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    width: 380px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    position: relative;
+    opacity: 0;
+    transform: translateY(30px);
+    animation: slideUpForm 0.8s ease-out forwards 0.4s;
+}
+
+@keyframes slideUpForm {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+form::before {
+    content: "📝 Create Your Account";
+    font-size: 22px;
+    font-weight: bold;
+    color: #000;
+    margin-bottom: 10px;
+    text-align: center;
+    animation: pulseText 1.8s infinite;
+}
+
+@keyframes pulseText {
+    0%, 100% { transform: scale(1); color: #000; }
+    50% { transform: scale(1.05); color: #f7c600; }
+}
+
+input[type="text"],
+input[type="password"],
+select {
+    width: 100%;
+    padding: 12px 14px;
+    border: 2px solid #000;
+    border-radius: 8px;
+    font-size: 15px;
+    background-color: #fefefe;
+    color: #000;
+    transition: border 0.3s, box-shadow 0.3s, transform 0.2s;
+}
+
+input:focus,
+select:focus {
+    border-color: #f7c600;
+    outline: none;
+    box-shadow: 0 0 10px #f7c600;
+    transform: scale(1.02);
+}
+
+label {
+    font-weight: bold;
+    color: #333;
+    font-size: 14px;
+}
+
+select {
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%204%205'%3E%3Cpath%20fill='%23000'%20d='M2%200L0%202h4L2%200zM2%205l2-2H0l2%202z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 12px;
+}
+
+button {
+    background-color: #f7c600;
+    color: #000;
+    border: none;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+}
+
+button:hover {
+    background-color: #e6b800;
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+button:active {
+    transform: scale(0.96);
+}
