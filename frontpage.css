@@ -176,8 +176,19 @@
   cursor: pointer;
 }
 
+.product-card button {
+  background-color: #28a745; /* Green */
+  color: white; /* Text color */
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
 
-
+.product-card button:hover {
+  background-color: #218838; /* Dark Green on hover */
+}
 
 .products-container {
   display: flex;
@@ -210,6 +221,17 @@
 .product-details p {
   font-size: 14px;
   margin-bottom: 15px;
+}
+
+.product-description {
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 15px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* Show only 3 lines of text */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis; /* Add an ellipsis at the end */
 }
 
 /* Button Styles */
@@ -342,3 +364,4 @@ button {
 .admin-btn button:hover {
   background-color: #555;
 }
+

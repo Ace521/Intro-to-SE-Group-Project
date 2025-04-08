@@ -45,7 +45,7 @@ button {
 }
 
 .edit-btn {
-    background-color: #4CAF50;
+    background-color: #11ff19;
     color: white;
 }
 
@@ -54,12 +54,16 @@ button {
 }
 
 .delete-btn {
-    background-color: #f44336;
+    background-color: #fb3a2c;
     color: white;
 }
 
 .delete-btn:hover {
     background-color: #d32f2f;
+}
+
+.delete-btn {
+    color: red
 }
 
 .home-button button {
@@ -146,4 +150,68 @@ button[type="submit"] {
 
 button[type="submit"]:hover {
     background-color: #45a049;
+}
+
+#edit-product-modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    background-color: rgba(0, 0, 0, 0.5); /* Black background with transparency */
+}
+
+/* Modal content */
+.modal-content {
+    background-color: #fff;
+    margin: 15% auto; /* Center the modal */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Modal width */
+    position: relative;
+}
+
+/* Close button (red and positioned at top-right corner of the modal) */
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: red;
+    font-size: 30px;
+    cursor: pointer;
+}
+
+.close-btn:hover {
+    color: darkred;
+}
+
+.product-details p {
+    font-size: 14px;
+    margin-bottom: 10px;
+    max-height: 150px; /* Max height before scrolling */
+    overflow-y: auto; /* Adds scroll bar when content overflows */
+}
+
+/* Modal Styles */
+#edit-product-modal .modal-content {
+    background-color: #fff;
+    margin: 10% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 60%; /* Adjusted width for better readability */
+}
+
+textarea {
+    resize: vertical; /* Allow vertical resizing */
+    max-height: 300px; /* Maximum height for the description text area */
+    min-height: 100px; /* Minimum height for the description text area */
+    overflow-y: auto; /* Scrollbar when content exceeds the max-height */
+}
+
+/* Optional: To improve scrolling on descriptions for longer text in the modal */
+textarea#edit-description {
+    height: 150px;
+    resize: vertical;
 }

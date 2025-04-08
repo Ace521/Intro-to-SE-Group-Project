@@ -68,6 +68,7 @@ document.addEventListener("DOMContentLoaded", function () {
             <img src="${product.image}" alt="${product.name}" class="product-image">
             <div class="product-details">
                 <h3>${product.name}</h3>
+                <p class="product-description">${product.description}</p>
                 <p>Price: $${product.price}</p>
                 <p>Quantity: ${product.quantity}</p>
         `;

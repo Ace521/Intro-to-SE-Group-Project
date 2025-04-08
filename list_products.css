@@ -59,10 +59,16 @@ h1 {
     border: 1px solid #ccc;
 }
 
+.product-box p {
+    word-wrap: break-word; /* Ensure long words break and wrap to the next line */
+    word-break: break-word; /* This ensures words break properly in case of long unbreakable strings */
+}
+
 .product-box img {
     width: 100%;
-    height: 200px;
-    object-fit: cover;
+    height: auto; /* Adjust the height to auto to maintain aspect ratio */
+    max-height: 200px; /* Optionally, limit the height to prevent images from getting too tall */
+    object-fit: contain; /* This ensures the whole image is visible without cropping */
     border-radius: 8px;
 }
 
