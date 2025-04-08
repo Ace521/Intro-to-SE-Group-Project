@@ -1,42 +1,37 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Home</title>
-    <div class="background-color">
-        <center>
-            <h1>LoungeSloth</h1>
-        </center>
-    </div>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+    <title>LoungeSloth - Home</title>
     <link rel="stylesheet" href="frontpage.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
 
     <div class="background-color">
+        <center><h1>LoungeSloth</h1></center>
         <div class="header-container">
             <a href="cart.html" id="cart-link" style="display: none;">
                 <div class="cart-icon">
                     <i class="fa fa-shopping-cart" style="font-size:36px"></i>
-                    <span class="cart-count" id="cart-count">3</span>
+                    <span class="cart-count" id="cart-count">0</span>
                 </div>
             </a>
         </div>
-    </div>
+    
 
     <!-- Search Bar -->
-     <div class="background-color">
-    <div class="search-container">
-        <center>
-            <form class="search" id="search-form" onsubmit="handleSearch(event)">
-                <input type="text" id="search-input" placeholder="Search.." name="search">
-                <button type="submit"><i class="fa fa-search"></i></button>
-            </form>
-        </center>
-    </div>
-    </div>
+    
+        <div class="search-container">
+            <center>
+                <form class="search" id="search-form" onsubmit="handleSearch(event)">
+                    <input type="text" id="search-input" placeholder="Search.." name="search">
+                    <button type="submit"><i class="fa fa-search"></i></button>
+                </form>
+            </center>
+        </div>
+    
 
     <!-- Hamburger Menu -->
     <div class="hamburger-menu" onclick="toggleMenu()">
@@ -50,10 +45,8 @@
         <ul id="dropdown-list"></ul>
     </div>
 
-    <script src="frontpage.js"></script>
-
     <!-- Welcome Message -->
-    <div class="background-color">
+    
         <div class="welcome-message">
             Welcome, <span class="user-role" id="user-role">User</span>
         </div>
@@ -76,66 +69,10 @@
         </div>
     </div>
 
-    <script>
-        const userRole = "Seller"; // You can dynamically set this based on your backend or localStorage
+    <!-- Products Container -->
+    <div class="products-container" id="products-container"></div>
 
-        // Dynamically setting the role
-        document.getElementById("user-role").textContent = userRole;
-
-        // Show the appropriate buttons based on the user's role
-        if (userRole === "Admin") {
-            document.getElementById("admin-buttons").style.display = "block";  // Show admin buttons
-            document.getElementById("cart-link").style.display = "none";  // Hide cart for Admin
-        } else if (userRole === "Seller") {
-            document.getElementById("seller-button").style.display = "block"; // Show Add Product button for Seller
-            document.getElementById("cart-link").style.display = "none";  // Hide cart for Seller
-        } else if (userRole === "Buyer") {
-            document.getElementById("cart-link").style.display = "block";  // Show cart for Buyer
-        }
-
-        // Handle search functionality
-        function handleSearch(event) {
-            event.preventDefault();
-            const searchTerm = document.getElementById('search-input').value.trim();
-            if (!searchTerm) {
-                return;
-            }
-            const searchResults = simulateSearch(searchTerm);
-            if (searchResults.length === 0) {
-                window.location.href = "search_fail.html";
-            } else {
-                alert("Found " + searchResults.length + " result(s).");
-            }
-        }
-
-        // Simulate a search function (replace with your actual search logic)
-        function simulateSearch(searchTerm) {
-            const items = ["Laptop", "Phone", "Tablet", "Headphones"];
-            return items.filter(item => item.toLowerCase().includes(searchTerm.toLowerCase()));
-        }
-
-        // Dynamically populate dropdown menu
-        const dropdownList = document.getElementById("dropdown-list");
-
-        function createMenuItem(text, link = "#", className = "") {
-            const li = document.createElement("li");
-            const a = document.createElement("a");
-            a.href = link;
-            a.textContent = text;
-            if (className) a.classList.add(className); // Add class to the link if provided
-            li.appendChild(a);
-            dropdownList.appendChild(li);
-        }
-
-        if (userRole === "Buyer" || userRole === "Admin") {
-            createMenuItem("Account", "account.html");
-            createMenuItem("Log Out", "#", "logout-btn");
-        } else if (userRole === "Seller") {
-            createMenuItem("Account", "account.html");
-            createMenuItem("Your Products", "seller_products.html");
-            createMenuItem("Log Out", "#", "logout-btn");
-        }
-    </script>
+    <script src="frontpage.js"></script>
 
 </body>
 </html>

@@ -30,6 +30,12 @@
             <p id="user-role">Buyer</p> <!-- Dynamically populated with user role -->
         </div>
 
+        <!-- User ID (New Section) -->
+        <div class="account-box">
+            <h2>User ID</h2>
+            <p id="user-id">1</p> <!-- Dynamically populated with user id -->
+        </div>
+
         <!-- Username -->
         <div class="account-box">
             <h2>Username</h2>
@@ -39,25 +45,26 @@
         <!-- Password -->
         <div class="account-box">
             <h2>Password</h2>
-            <p id="password">********</p> <!-- Dynamically populated with password (hidden) -->
+            <p id="password">*******</p> <!-- Dynamically populated with password (hidden) -->
         </div>
         <button id="edit-username" class="edit-btn">Edit Information</button>
-        <button onclick="document.getElementById('id01').style.display='block'">Delete Account</button>
+        <button id="delete-account-btn" onclick="openDeleteModal()">Delete Account</button> <!-- Delete Account Button -->
 
-<div id="id01" class="modal">
-  <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
-  <form class="modal-content" action="/action_page.php">
-    <div class="container">
-      <h1>Delete Account</h1>
-      <p>Are you sure you want to delete your account?</p>
+        <!-- Modal for account deletion -->
+        <div id="id01" class="modal">
+            <span onclick="closeDeleteModal()" class="close" title="Close Modal">&times;</span>
+            <form class="modal-content">
+                <div class="container">
+                    <h1>Delete Account</h1>
+                    <p>Are you sure you want to delete your account?</p>
 
-      <div class="clearfix">
-        <button type="button" class="cancelbtn">Cancel</button>
-        <button type="button" class="deletebtn">Delete</button>
-      </div>
-    </div>
-  </form>
-</div>
+                    <div class="clearfix">
+                        <button type="button" class="cancelbtn" onclick="closeDeleteModal()">Cancel</button>
+                        <button type="button" id="deletebtn" class="deletebtn" onclick="deleteAccount()">Delete</button>
+                    </div>
+                </div>
+            </form>
+        </div>
         
         <!-- Edit Form (Initially hidden) -->
         <div id="edit-form" class="edit-form" style="display: none;">
@@ -79,8 +86,8 @@
 
     <script>
         // JavaScript to conditionally show the balance section
-        const userRole = "Buyer"; // You can dynamically fetch this value based on your application
-
+        // You can dynamically fetch this value based on your application
+        const userRole = "Buyer"
         // Set the role on the page (you can replace "Buyer" with the actual role)
         document.getElementById('user-role').textContent = userRole;
 

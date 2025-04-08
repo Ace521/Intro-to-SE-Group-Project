@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
             description: 'This is a description for Product 1.',
             price: 25.99,
             quantity: 10,
-            image: 'product1.jpg'
+            image: 'Product 1.webp'
         },
         {
             id: 2,
@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function() {
             description: 'This is a description for Product 2.',
             price: 15.99,
             quantity: 5,
-            image: 'product2.jpg'
+            image: 'Product 2.png'
         }
     ];
 
