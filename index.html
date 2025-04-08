@@ -1,29 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to LoungeSloth</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="index.css">
-
+  <meta charset="UTF-8">
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
-    <div class="container">
-        <h1 id="welcome-text">Welcome to LoungeSloth</h1>
-        <div class="buttons">
-            <button onclick="window.location.href='create_account.html'">Create an Account</button>
-            <button onclick="window.location.href='login.html'">Log In</button>
-        </div>
-    </div>
-    
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            let welcomeText = document.getElementById("welcome-text");
-            welcomeText.style.opacity = 0;
-            welcomeText.style.transition = "opacity 2s ease-in-out";
-            setTimeout(() => welcomeText.style.opacity = 1, 500);
-        });
-    </script>
+  <h1>User Monitoring Dashboard</h1>
+  <table id="user-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Status</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+  <script src="/script.js"></script>
 </body>
 </html>
