@@ -60,4 +60,21 @@ function toggleMenu() {
     const menu = document.getElementById('dropdown-menu');
     menu.classList.toggle('show');
 }
+function logout() {
+    fetch('/logout', {
+        method: 'POST',
+        credentials: 'include'
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            window.location.href = 'login.html'; // Redirect to login page
+        } else {
+            alert('Logout failed!');
+        }
+    })
+    .catch(err => {
+        console.error('Logout error:', err);
+    });
+}
 
