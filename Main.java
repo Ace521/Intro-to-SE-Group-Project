@@ -18,6 +18,8 @@ public class Main {
         server.createContext("/createAccount", new CreateAccountHandler());
         server.createContext("/getRole", new GetRoleHandler());  // New endpoint to fetch user role
         server.createContext("/logout", new LogoutHandler());  // New endpoint for logout
+        server.createContext("/edit-account", new EditAccountHandler());
+        server.createContext("/delete-account", new DeleteAccountHandler());
         server.setExecutor(null);
         server.start();
         System.out.println("HTTP server started on port 4567");
@@ -53,6 +55,85 @@ public class Main {
             sendResponse(exchange, response);
         }
     }
+
+    // Handler for editing an account
+    static class EditAccountHandler implements HttpHandler {
+        @Override
+        public void handle(HttpExchange exchange) throws IOException {
+            if (!exchange.getRequestMethod().equalsIgnoreCase("POST")) {
+                exchange.sendResponseHeaders(405, -1);
+                return;
+            }
+
+            InputStreamReader isr = new InputStreamReader(exchange.getRequestBody(), "utf-8");
+            BufferedReader br = new BufferedReader(isr);
+            StringBuilder requestBody = new StringBuilder();
+            String line;
+            while ((line = br.readLine()) != null) {
+                requestBody.append(line);
+            }
+
+            String body = requestBody.toString();
+            String userId = getJsonValue(body, "userId");
+            String newUsername = getJsonValue(body, "newUsername");
+            String newPassword = getJsonValue(body, "newPassword");
+
+            String response;
+            try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS)) {
+                String query = "UPDATE users SET username = ?, password = ? WHERE id = ?";
+                try (PreparedStatement stmt = conn.prepareStatement(query)) {
+                    stmt.setString(1, newUsername);
+                    stmt.setString(2, newPassword);
+                    stmt.setInt(3, Integer.parseInt(userId));
+                    int rows = stmt.executeUpdate();
+                    response = rows > 0 ? "{\"success\":true}" : "{\"success\":false}";
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                response = "{\"success\":false,\"error\":\"Database error\"}";
+            }
+
+            sendJsonResponse(exchange, response);
+        }
+    }
+
+        // Handler for deleting an account
+    static class DeleteAccountHandler implements HttpHandler {
+        @Override
+        public void handle(HttpExchange exchange) throws IOException {
+            if (!exchange.getRequestMethod().equalsIgnoreCase("DELETE")) {
+                exchange.sendResponseHeaders(405, -1);
+                return;
+            }
+
+            InputStreamReader isr = new InputStreamReader(exchange.getRequestBody(), "utf-8");
+            BufferedReader br = new BufferedReader(isr);
+            StringBuilder requestBody = new StringBuilder();
+            String line;
+            while ((line = br.readLine()) != null) {
+                requestBody.append(line);
+            }
+
+            String body = requestBody.toString();
+            String userId = getJsonValue(body, "userId");
+
+            String response;
+            try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS)) {
+                String query = "DELETE FROM users WHERE id = ?";
+                try (PreparedStatement stmt = conn.prepareStatement(query)) {
+                    stmt.setInt(1, Integer.parseInt(userId));
+                    int rows = stmt.executeUpdate();
+                    response = rows > 0 ? "{\"success\":true}" : "{\"success\":false}";
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                response = "{\"success\":false,\"error\":\"Database error\"}";
+            }
+
+            sendJsonResponse(exchange, response);
+        }
+    }
+
 
     // Handler for fetching the role of the user
     static class GetRoleHandler implements HttpHandler {
