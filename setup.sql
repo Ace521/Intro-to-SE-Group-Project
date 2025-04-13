@@ -18,8 +18,6 @@ CREATE TABLE products (
     image_url VARCHAR(255),
     seller_id INT,
     
-    FOREIGN KEY (category_id) REFERENCES categories(id),
-    FOREIGN KEY (brand_id) REFERENCES brands(id),
     FOREIGN KEY (seller_id) REFERENCES users(id)
 );
 
