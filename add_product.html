@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Product - LoungeSloth</title>
     
-    <!-- Link to CSS File -->
+    <!-- CSS -->
     <link rel="stylesheet" href="add_product.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
@@ -13,7 +13,7 @@
     <div class="background-color">
         <div class="home-button">
             <button onclick="window.location.href='frontpage.html';">
-                <i class="fa fa-home" style="font-size: 24px;"></i> <!-- Home Icon -->
+                <i class="fa fa-home" style="font-size: 24px;"></i>
             </button>
         </div>
         <center>
@@ -39,17 +39,18 @@
                 <label for="product-image">Product Image:</label>
                 <input type="file" id="product-image" name="image" required accept="image/*">
 
-                <!-- Image Preview Section -->
-                <div id="image-preview-container" style="margin-top: 10px; text-align: center;">
-                    <!-- Image preview will appear here -->
-                </div>
+                <!-- Image Preview -->
+                <div id="image-preview-container" style="margin-top: 10px; text-align: center;"></div>
+
+                <!-- Message Display -->
+                <p id="message" style="color: red; font-weight: bold; display: none;"></p>
 
                 <button type="submit" disabled>Add Product</button>
             </form>
         </div>
     </div>
 
-    <!-- Link to JavaScript File -->
+    <!-- JavaScript -->
     <script src="add_product.js"></script>
 </body>
 </html>

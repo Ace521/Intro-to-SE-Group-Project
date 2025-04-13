@@ -18,8 +18,6 @@ public class Main {
         server.createContext("/createAccount", new CreateAccountHandler());
         server.createContext("/getRole", new GetRoleHandler());  // New endpoint to fetch user role
         server.createContext("/logout", new LogoutHandler());  // New endpoint for logout
-        server.createContext("/edit-account", new EditAccountHandler());
-        server.createContext("/delete-account", new DeleteAccountHandler());
         server.setExecutor(null);
         server.start();
         System.out.println("HTTP server started on port 4567");
@@ -55,85 +53,6 @@ public class Main {
             sendResponse(exchange, response);
         }
     }
-
-    // Handler for editing an account
-    static class EditAccountHandler implements HttpHandler {
-        @Override
-        public void handle(HttpExchange exchange) throws IOException {
-            if (!exchange.getRequestMethod().equalsIgnoreCase("POST")) {
-                exchange.sendResponseHeaders(405, -1);
-                return;
-            }
-
-            InputStreamReader isr = new InputStreamReader(exchange.getRequestBody(), "utf-8");
-            BufferedReader br = new BufferedReader(isr);
-            StringBuilder requestBody = new StringBuilder();
-            String line;
-            while ((line = br.readLine()) != null) {
-                requestBody.append(line);
-            }
-
-            String body = requestBody.toString();
-            String userId = getJsonValue(body, "userId");
-            String newUsername = getJsonValue(body, "newUsername");
-            String newPassword = getJsonValue(body, "newPassword");
-
-            String response;
-            try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS)) {
-                String query = "UPDATE users SET username = ?, password = ? WHERE id = ?";
-                try (PreparedStatement stmt = conn.prepareStatement(query)) {
-                    stmt.setString(1, newUsername);
-                    stmt.setString(2, newPassword);
-                    stmt.setInt(3, Integer.parseInt(userId));
-                    int rows = stmt.executeUpdate();
-                    response = rows > 0 ? "{\"success\":true}" : "{\"success\":false}";
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-                response = "{\"success\":false,\"error\":\"Database error\"}";
-            }
-
-            sendJsonResponse(exchange, response);
-        }
-    }
-
-        // Handler for deleting an account
-    static class DeleteAccountHandler implements HttpHandler {
-        @Override
-        public void handle(HttpExchange exchange) throws IOException {
-            if (!exchange.getRequestMethod().equalsIgnoreCase("DELETE")) {
-                exchange.sendResponseHeaders(405, -1);
-                return;
-            }
-
-            InputStreamReader isr = new InputStreamReader(exchange.getRequestBody(), "utf-8");
-            BufferedReader br = new BufferedReader(isr);
-            StringBuilder requestBody = new StringBuilder();
-            String line;
-            while ((line = br.readLine()) != null) {
-                requestBody.append(line);
-            }
-
-            String body = requestBody.toString();
-            String userId = getJsonValue(body, "userId");
-
-            String response;
-            try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS)) {
-                String query = "DELETE FROM users WHERE id = ?";
-                try (PreparedStatement stmt = conn.prepareStatement(query)) {
-                    stmt.setInt(1, Integer.parseInt(userId));
-                    int rows = stmt.executeUpdate();
-                    response = rows > 0 ? "{\"success\":true}" : "{\"success\":false}";
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-                response = "{\"success\":false,\"error\":\"Database error\"}";
-            }
-
-            sendJsonResponse(exchange, response);
-        }
-    }
-
 
     // Handler for fetching the role of the user
     static class GetRoleHandler implements HttpHandler {
@@ -183,6 +102,48 @@ public class Main {
             sendResponse(exchange, response);
         }
     }
+    
+    static class AddProductHandler implements HttpHandler {
+        @Override
+        public void handle(HttpExchange exchange) throws IOException {
+            if (!exchange.getRequestMethod().equalsIgnoreCase("POST")) {
+                exchange.sendResponseHeaders(405, -1);
+                return;
+            }
+
+            Map<String, String> fields = getFormData(exchange);
+            String name = fields.get("name");
+            String description = fields.get("description");
+            double price = Double.parseDouble(fields.get("price"));
+            int quantity = Integer.parseInt(fields.get("quantity"));
+            String imageUrl = fields.get("image");
+            String username = fields.get("username");
+
+            try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS)) {
+                int sellerId = getUserIdByUsername(conn, username);
+                if (sellerId == -1) {
+                    sendResponse(exchange, "{\"success\": false, \"message\": \"Seller not found\"}");
+                    return;
+                }
+
+                String sql = "INSERT INTO products (name, description, price, quantity, image_url, seller_id) VALUES (?, ?, ?, ?, ?, ?)";
+                try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+                    stmt.setString(1, name);
+                    stmt.setString(2, description);
+                    stmt.setDouble(3, price);
+                    stmt.setInt(4, quantity);
+                    stmt.setString(5, imageUrl);
+                    stmt.setInt(6, sellerId);
+                    stmt.executeUpdate();
+                }
+
+                sendResponse(exchange, "{\"success\": true}");
+            } catch (Exception e) {
+                e.printStackTrace();
+                sendResponse(exchange, "{\"success\": false, \"message\": \"Server error\"}");
+            }
+        }
+    }
 
     // Helper method to check if a username exists in the database
     private static boolean usernameExists(Connection conn, String username) throws SQLException {
@@ -193,6 +154,16 @@ public class Main {
             rs.next();
             return rs.getInt(1) > 0;
         }
+    }
+
+    private static int getUserIdByUsername(Connection conn, String username) throws SQLException {
+        String sql = "SELECT id FROM users WHERE username = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, username);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) return rs.getInt("id");
+        }
+        return -1;
     }
 
     // Helper method to insert a new user into the database

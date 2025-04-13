@@ -1,21 +1,31 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const productImageInput = document.getElementById('product-image');
     const productForm = document.getElementById('product-form');
     const submitButton = productForm.querySelector('button');
-    
-    // Image preview functionality
-    productImageInput.addEventListener('change', function() {
+    const messageElement = document.getElementById('message');
+
+    function showMessage(msg, color = 'red') {
+        messageElement.textContent = msg;
+        messageElement.style.color = color;
+        messageElement.style.display = 'block';
+    }
+
+    function clearMessage() {
+        messageElement.textContent = '';
+        messageElement.style.display = 'none';
+    }
+
+    // Image preview
+    productImageInput.addEventListener('change', function () {
         const file = productImageInput.files[0];
         if (file) {
             const reader = new FileReader();
-            reader.onload = function(e) {
+            reader.onload = function (e) {
                 const imgPreview = document.createElement('img');
                 imgPreview.src = e.target.result;
-                imgPreview.style.width = '200px';  // Set the preview size
-                imgPreview.style.height = '200px'; // Set the preview size
-                imgPreview.style.objectFit = 'cover'; // Maintain aspect ratio of image
-
-                // Clear the previous image preview (if any)
+                imgPreview.style.width = '200px';
+                imgPreview.style.height = '200px';
+                imgPreview.style.objectFit = 'cover';
                 document.getElementById('image-preview-container').innerHTML = '';
                 document.getElementById('image-preview-container').appendChild(imgPreview);
             };
@@ -23,66 +33,64 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Enable/Disable submit button based on form validity
-    productForm.addEventListener('input', function() {
-        const isFormValid = productForm.checkValidity();
-        submitButton.disabled = !isFormValid;
+    // Enable submit when form is valid
+    productForm.addEventListener('input', function () {
+        submitButton.disabled = !productForm.checkValidity();
     });
 
-    // Handle form submission
-    productForm.addEventListener('submit', function(event) {
+    // Submit handler
+    productForm.addEventListener('submit', function (event) {
         event.preventDefault();
+        clearMessage();
 
-        const productName = document.getElementById('product-name').value.trim();
-        const productDescription = document.getElementById('product-description').value.trim();
-        const productPrice = document.getElementById('product-price').value.trim();
-        const productQuantity = document.getElementById('product-quantity').value.trim();
-        const productImage = document.getElementById('product-image').files[0];
+        const name = document.getElementById('product-name').value.trim();
+        const description = document.getElementById('product-description').value.trim();
+        const price = document.getElementById('product-price').value.trim();
+        const quantity = document.getElementById('product-quantity').value.trim();
+        const imageFile = document.getElementById('product-image').files[0];
+        const username = sessionStorage.getItem('username');
 
-        if (!productImage) {
-            alert('Please select an image for the product.');
+        if (!username) {
+            showMessage('You must be logged in to add a product.');
             return;
         }
 
-        console.log('Product Name:', productName);
-        console.log('Product Description:', productDescription);
-        console.log('Product Price:', productPrice);
-        console.log('Product Quantity:', productQuantity);
-        console.log('Product Image:', productImage.name);
-
-        // Here, you could integrate an API to save the product to the backend
-
-        alert('Product added successfully!');
-
-        // Optionally, reset the form
-        productForm.reset();
-        document.getElementById('image-preview-container').innerHTML = '';
-        submitButton.disabled = true;
-    });
-});
-
-productForm.addEventListener('submit', function(event) {
-    event.preventDefault();
-
-    const formData = new FormData(productForm); // Create FormData object with all form fields
-
-    fetch('/api/products/add', {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            alert('Product added successfully!');
-            productForm.reset();
-            document.getElementById('image-preview-container').innerHTML = '';
-            submitButton.disabled = true;
-        } else {
-            alert('Error adding product.');
+        if (!imageFile) {
+            showMessage('Please select an image for the product.');
+            return;
         }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('Error adding product.');
+
+        const imageUrl = imageFile.name; // For now, assume image name is used
+
+        const formData = new URLSearchParams();
+        formData.append('name', name);
+        formData.append('description', description);
+        formData.append('price', price);
+        formData.append('quantity', quantity);
+        formData.append('image', imageUrl);
+        formData.append('username', username);
+
+        fetch('/api/products/add', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: formData.toString()
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showMessage('Product added successfully!', 'green');
+                productForm.reset();
+                document.getElementById('image-preview-container').innerHTML = '';
+                submitButton.disabled = true;
+            } else {
+                showMessage('Error adding product: ' + (data.message || 'Unknown error'));
+            }
+        })
+        .catch(error => {
+            console.error('[DEBUG] Fetch error:', error);
+            showMessage('Error adding product.');
+        });
     });
 });
