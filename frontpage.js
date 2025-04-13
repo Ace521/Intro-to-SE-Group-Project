@@ -1,144 +1,88 @@
 document.addEventListener("DOMContentLoaded", function () {
-  const userRole = "Seller"; // Dynamically set the role (e.g., from backend or session/localStorage)
-  document.getElementById("user-role").textContent = userRole;
+    const username = "currentLoggedInUser"; // Replace with actual logged-in user identifier
+    const dropdownList = document.getElementById("dropdown-list");
 
-  // Show role-specific buttons
-  if (userRole === "Admin") {
-      document.getElementById("admin-buttons").style.display = "block";
-      document.getElementById("cart-link").style.display = "none"; // Admins typically don't need a cart view
-  } else if (userRole === "Seller") {
-      document.getElementById("seller-button").style.display = "block";
-      document.getElementById("cart-link").style.display = "none"; // Sellers also don't need the cart
-  } else if (userRole === "Buyer") {
-      document.getElementById("cart-link").style.display = "block";
-  }
+    // Fetch the user's role
+    fetch(`/getRole?username=${encodeURIComponent(username)}`)
+        .then(response => response.text())
+        .then(role => {
+            // If the role is "Guest" or empty, show "User"
+            if (role === "" || role === "Guest") {
+                role = "User";
+            }
 
-  // Handle search functionality
-  document.getElementById("search-form").addEventListener("submit", handleSearch);
+            // Set the role in the welcome message
+            document.getElementById("user-role").textContent = role;
 
-  // Dynamically populate the dropdown menu based on user role
-  const dropdownList = document.getElementById("dropdown-list");
+            // Dynamically populate the dropdown menu based on user role
+            createMenuItem("Account", "account.html");
 
-  function createMenuItem(text, link = "#", className = "") {
-      const li = document.createElement("li");
-      const a = document.createElement("a");
-      a.href = link;
-      a.textContent = text;
-      if (className) a.classList.add(className);
-      li.appendChild(a);
-      dropdownList.appendChild(li);
-  }
+            // Based on role, show different menu items
+            if (role === "Admin") {
+                createMenuItem("Log Out", "#", "logout-btn");
+            } else if (role === "Seller") {
+                createMenuItem("Your Products", "seller_products.html");
+                createMenuItem("Log Out", "#", "logout-btn");
+            } else if (role === "Buyer") {
+                createMenuItem("Log Out", "#", "logout-btn");
+            } else {
+                createMenuItem("Home", "index.html");
+            }
+        })
+        .catch(error => {
+            console.error("Error fetching role:", error);
+            // Fallback if there is an error, display "User" role in the welcome message
+            document.getElementById("user-role").textContent = "User";
+        });
 
-  if (userRole === "Buyer" || userRole === "Admin") {
-      createMenuItem("Account", "account.html");
-      createMenuItem("Log Out", "#", "logout-btn");
-  } else if (userRole === "Seller") {
-      createMenuItem("Account", "account.html");
-      createMenuItem("Your Products", "seller_products.html");
-      createMenuItem("Log Out", "#", "logout-btn");
-  }
+    // Function to create menu items for the dropdown
+    function createMenuItem(text, link = "#", className = "") {
+        const li = document.createElement("li");
+        const a = document.createElement("a");
+        a.href = link;
+        a.textContent = text;
+        if (className) a.classList.add(className);
+        li.appendChild(a);
+        dropdownList.appendChild(li);
+    }
 
-  // Fetch and display products only for Buyers and Sellers
-  if (userRole === "Buyer" || userRole === "Seller") {
-      fetchProducts();
-  }
+    // Toggle the dropdown menu visibility when the hamburger menu is clicked
+    window.toggleMenu = function() {
+        const dropdownMenu = document.getElementById('dropdown-menu');
+        dropdownMenu.classList.toggle('show');
+    };
 
-  // Fetch products from the backend (assuming an API is available)
-  async function fetchProducts() {
-    // Simulate products as mock data
-    const products = [
-        { id: 1, name: "Product 1", description: "Description of product 1", image: "Product 1.webp", price: 100.00, quantity: 20 },
-        { id: 2, name: "Product 2", description: "Description of product 2", image: "Product 2.png", price: 150.00, quantity: 15 },
-        { id: 3, name: "Product 3", description: "Description of product 3", image: "Product 3.jpg", price: 200.00, quantity: 10 }
-    ];
-
-    displayProducts(products);
-}
-
-  // Display products in the container
-  function displayProducts(products) {
-    const productsContainer = document.getElementById("products-container");
-    productsContainer.innerHTML = ''; // Clear previous products
-
-    products.forEach(product => {
-        const productCard = document.createElement("div");
-        productCard.classList.add("product-card");
-        
-        productCard.innerHTML = `
-            <img src="${product.image}" alt="${product.name}" class="product-image">
-            <div class="product-details">
-                <h3>${product.name}</h3>
-                <p class="product-description">${product.description}</p>
-                <p>Price: $${product.price}</p>
-                <p>Quantity: ${product.quantity}</p>
-        `;
-
-        // Check if the user is a seller or buyer and conditionally add the "Add to Cart" button
-        if (userRole === "Buyer") {
-            productCard.innerHTML += `
-                <button onclick="addToCart(${product.id})">Add to Cart</button>
-            `;
+    // Handle logout
+    document.body.addEventListener("click", function(event) {
+        if (event.target && event.target.classList.contains("logout-btn")) {
+            fetch("/logout", { method: "POST" })  // Assuming the backend handles the POST request for logging out
+                .then(response => response.text())
+                .then(responseText => {
+                    alert(responseText);  // Optionally show a logout message
+                    window.location.href = "index.html";  // Redirect to the home page after logout
+                })
+                .catch(error => console.error("Error logging out:", error));
         }
-
-        productCard.innerHTML += `</div>`; // Close product details
-        productsContainer.appendChild(productCard);
     });
-}
 
-  // Add product to the cart
-  function addToCart(productId) {
-      let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    // Handle search
+    document.getElementById("search-form").addEventListener("submit", function(event) {
+        event.preventDefault();
+        const searchTerm = document.getElementById('search-input').value.trim();
+        if (!searchTerm) {
+            return;
+        }
+        const searchResults = simulateSearch(searchTerm);
+        if (searchResults.length === 0) {
+            window.location.href = "search_fail.html";
+        } else {
+            alert("Found " + searchResults.length + " result(s).");
+        }
+    });
 
-      // Check if product already exists in the cart, if so, update quantity
-      const existingProductIndex = cart.findIndex(item => item.id === productId);
-
-      if (existingProductIndex !== -1) {
-          cart[existingProductIndex].quantity += 1;  // Increment the quantity if the product already exists
-      } else {
-          cart.push({ id: productId, quantity: 1 });  // Add new product to the cart
-      }
-
-      // Save updated cart back to localStorage
-      localStorage.setItem("cart", JSON.stringify(cart));
-
-      // Update cart count in the UI
-      updateCartCount();
-  }
-
-  // Update the cart count from localStorage
-  function updateCartCount() {
-      const cart = JSON.parse(localStorage.getItem("cart")) || [];
-      const cartCount = document.getElementById('cart-count');
-      const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0); // Sum up all quantities of items in the cart
-      cartCount.textContent = totalItems; // Update cart count with the total number of items in the cart
-  }
-
-  // Initialize cart count on page load
-  updateCartCount();
-
-  // Handle search functionality
-  function handleSearch(event) {
-      event.preventDefault();
-      const searchTerm = document.getElementById('search-input').value.trim();
-      if (!searchTerm) {
-          return;
-      }
-      const searchResults = simulateSearch(searchTerm);
-      if (searchResults.length === 0) {
-          window.location.href = "search_fail.html";
-      } else {
-          alert("Found " + searchResults.length + " result(s).");
-      }
-  }
-
-  // Simulate a search function (replace with actual search logic)
-  function simulateSearch(searchTerm) {
-      const items = ["Laptop", "Phone", "Tablet", "Headphones"];
-      return items.filter(item => item.toLowerCase().includes(searchTerm.toLowerCase()));
-  }
+    // Simulate a search function (replace with actual search logic)
+    function simulateSearch(searchTerm) {
+        const items = ["Laptop", "Phone", "Tablet", "Headphones"];
+        return items.filter(item => item.toLowerCase().includes(searchTerm.toLowerCase()));
+    }
 });
-
-function toggleMenu() {
-  const dropdownMenu = document.getElementById('dropdown-menu');
-  dropdownMenu.classList.toggle('show');
-}

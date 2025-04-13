@@ -16,11 +16,14 @@ public class Main {
     public static void main(String[] args) throws IOException {
         HttpServer server = HttpServer.create(new InetSocketAddress(4567), 0);
         server.createContext("/createAccount", new CreateAccountHandler());
+        server.createContext("/getRole", new GetRoleHandler());  // New endpoint to fetch user role
+        server.createContext("/logout", new LogoutHandler());  // New endpoint for logout
         server.setExecutor(null);
         server.start();
         System.out.println("HTTP server started on port 4567");
     }
 
+    // Handler for creating a new account
     static class CreateAccountHandler implements HttpHandler {
         @Override
         public void handle(HttpExchange exchange) throws IOException {
@@ -51,6 +54,56 @@ public class Main {
         }
     }
 
+    // Handler for fetching the role of the user
+    static class GetRoleHandler implements HttpHandler {
+        @Override
+        public void handle(HttpExchange exchange) throws IOException {
+            String username = exchange.getRequestURI().getQuery();
+            username = URLDecoder.decode(username, "UTF-8").split("=")[1]; // Extract username from query string
+
+            String response;
+            try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS)) {
+                String role = getUserRole(conn, username);
+                if (role != null) {
+                    response = role;  // Return the role as plain text
+                } else {
+                    response = "User not found";
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                response = "Database error";
+            }
+
+            sendResponse(exchange, response);
+        }
+
+        private String getUserRole(Connection conn, String username) throws SQLException {
+            String query = "SELECT role FROM users WHERE username = ?";
+            try (PreparedStatement stmt = conn.prepareStatement(query)) {
+                stmt.setString(1, username);
+                ResultSet rs = stmt.executeQuery();
+                if (rs.next()) {
+                    return rs.getString("role");
+                }
+                return null;  // User not found
+            }
+        }
+    }
+
+    // Handler for logging out the user
+    static class LogoutHandler implements HttpHandler {
+        @Override
+        public void handle(HttpExchange exchange) throws IOException {
+            // This can clear session or do whatever is necessary for logging out
+            // For simplicity, we just send a "logged out" message
+            String response = "You have been logged out successfully.";
+            // You might want to clear a session or authentication data here
+            
+            sendResponse(exchange, response);
+        }
+    }
+
+    // Helper method to check if a username exists in the database
     private static boolean usernameExists(Connection conn, String username) throws SQLException {
         String checkQuery = "SELECT COUNT(*) FROM users WHERE username = ?";
         try (PreparedStatement stmt = conn.prepareStatement(checkQuery)) {
@@ -61,6 +114,7 @@ public class Main {
         }
     }
 
+    // Helper method to insert a new user into the database
     private static void insertUser(Connection conn, String username, String password, String type) throws SQLException {
         String insertQuery = "INSERT INTO users (username, password, role) VALUES (?, ?, ?)";
         try (PreparedStatement stmt = conn.prepareStatement(insertQuery)) {
@@ -71,6 +125,7 @@ public class Main {
         }
     }
 
+    // Helper method to send a response back to the client
     private static void sendResponse(HttpExchange exchange, String response) throws IOException {
         byte[] bytes = response.getBytes("UTF-8");
         exchange.getResponseHeaders().set("Content-Type", "text/plain; charset=utf-8");
@@ -80,6 +135,7 @@ public class Main {
         }
     }
 
+    // Helper method to parse form data from the POST request
     private static Map<String, String> getFormData(HttpExchange exchange) throws IOException {
         InputStreamReader isr = new InputStreamReader(exchange.getRequestBody(), "utf-8");
         BufferedReader br = new BufferedReader(isr);
@@ -96,4 +152,3 @@ public class Main {
         return map;
     }
 }
-
