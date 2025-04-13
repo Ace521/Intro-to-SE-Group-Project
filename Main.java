@@ -20,6 +20,7 @@ public class Main {
         server.createContext("/logout", new LogoutHandler());  // New endpoint for logout
         server.createContext("/edit-account", new EditAccountHandler());
          server.createContext("/delete-account", new DeleteAccountHandler());
+         server.createContext("/getProducts", new GetProductsHandler());
         server.setExecutor(null);
         server.start();
         System.out.println("HTTP server started on port 4567");
@@ -65,6 +66,59 @@ public class Main {
              sendJsonResponse(exchange, response);
          }
      }
+
+     static class GetProductsHandler implements HttpHandler {
+    @Override
+    public void handle(HttpExchange exchange) throws IOException {
+        if (!exchange.getRequestMethod().equalsIgnoreCase("GET")) {
+            exchange.sendResponseHeaders(405, -1); // Method Not Allowed
+            return;
+        }
+
+        StringBuilder response = new StringBuilder();
+        response.append("[");
+
+        try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS)) {
+            String sql = "SELECT name, description, price, quantity, image_url FROM products";
+            try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+                ResultSet rs = stmt.executeQuery();
+                boolean first = true;
+                while (rs.next()) {
+                    if (!first) response.append(",");
+                    first = false;
+
+                    response.append("{")
+                            .append("\"name\":\"").append(escapeJson(rs.getString("name"))).append("\",")
+                            .append("\"description\":\"").append(escapeJson(rs.getString("description"))).append("\",")
+                            .append("\"price\":").append(rs.getDouble("price")).append(",")
+                            .append("\"quantity\":").append(rs.getInt("quantity")).append(",")
+                            .append("\"imageUrl\":\"").append(escapeJson(rs.getString("image_url"))).append("\"")
+                            .append("}");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            response = new StringBuilder("{\"error\":\"Database error\"}");
+        }
+
+        response.append("]");
+        sendJsonResponse(exchange, response.toString());
+    }
+
+    private void sendJsonResponse(HttpExchange exchange, String response) throws IOException {
+        byte[] bytes = response.getBytes("UTF-8");
+        exchange.getResponseHeaders().set("Content-Type", "application/json; charset=utf-8");
+        exchange.sendResponseHeaders(200, bytes.length);
+        try (OutputStream os = exchange.getResponseBody()) {
+            os.write(bytes);
+        }
+    }
+
+    // Escape JSON special characters
+    private String escapeJson(String s) {
+        return s == null ? "" : s.replace("\"", "\\\"").replace("\n", "\\n").replace("\r", "");
+    }
+}
  
          // Handler for deleting an account
      static class DeleteAccountHandler implements HttpHandler {

@@ -15,16 +15,21 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById("user-role").textContent = role;
 
             // Dynamically populate the dropdown menu based on user role
-            createMenuItem("Account", "account.html");
+            // Only show the "Account" menu item if the user is not a guest
+            if (role !== "User") {
+                createMenuItem("Account", "account.html");
+            }
 
             // Based on role, show different menu items
-            if (role === "Admin") {
+            if (role === "Admin" || role == "admin") {
+                createMenuItem("Admin Dashboard", "admin_dashboard.html");
                 createMenuItem("Log Out", "#", "logout-btn");
-            } else if (role === "Seller") {
+            } else if (role === "Seller" || role == "seller") {
                 createMenuItem("Your Products", "seller_products.html");
                 createMenuItem("Log Out", "#", "logout-btn");
-            } else if (role === "Buyer") {
+            } else if (role === "Buyer" || role == "buyer") {
                 createMenuItem("Log Out", "#", "logout-btn");
+                showAddToCartButton(true);  // Show "Add to Cart" button for buyers
             } else {
                 createMenuItem("Home", "index.html");
             }
@@ -44,6 +49,19 @@ document.addEventListener("DOMContentLoaded", function () {
         if (className) a.classList.add(className);
         li.appendChild(a);
         dropdownList.appendChild(li);
+    }
+
+    // Function to show the "Add to Cart" button
+    function showAddToCartButton(show) {
+        const productCards = document.querySelectorAll('.product-card');
+        productCards.forEach(card => {
+            const addToCartButton = document.createElement('button');
+            addToCartButton.textContent = "Add to Cart";
+            addToCartButton.classList.add('add-to-cart-button');
+            if (show) {
+                card.appendChild(addToCartButton);
+            }
+        });
     }
 
     // Toggle the dropdown menu visibility when the hamburger menu is clicked
@@ -85,4 +103,26 @@ document.addEventListener("DOMContentLoaded", function () {
         const items = ["Laptop", "Phone", "Tablet", "Headphones"];
         return items.filter(item => item.toLowerCase().includes(searchTerm.toLowerCase()));
     }
+
+    // Fetch and display products
+    fetch("/getProducts")
+        .then(response => response.json())
+        .then(products => {
+            const container = document.getElementById("products-container");
+            products.forEach(product => {
+                const productCard = document.createElement("div");
+                productCard.className = "product-card";
+
+                productCard.innerHTML = `
+                    <img src="${product.image_url}" alt="${product.name}" class="product-img">
+                    <h3>${product.name}</h3>
+                    <p>${product.description}</p>
+                    <p><strong>Price:</strong> $${product.price.toFixed(2)}</p>
+                    <p><strong>Available:</strong> ${product.quantity}</p>
+                    <p><strong>Seller:</strong> ${product.seller}</p>
+                `;
+                container.appendChild(productCard);
+            });
+        })
+        .catch(error => console.error("Error loading products:", error));
 });
