@@ -27,64 +27,74 @@
         <!-- User Role (No Edit Button) -->
         <div class="account-box">
             <h2>User Role</h2>
-            <p id="user-role">Buyer</p> <!-- Dynamically populated with user role -->
+            <p id="user-role">Unknown</p> <!-- Dynamically populated with user role -->
+        </div>
+
+        <!-- User ID (New Section) -->
+        <div class="account-box">
+            <h2>User ID</h2>
+            <p id="user-id">Unknown</p> <!-- Dynamically populated with user id -->
         </div>
 
         <!-- Username -->
         <div class="account-box">
             <h2>Username</h2>
-            <p id="username">user123</p> <!-- Dynamically populated with username -->
+            <p id="username">Unknown</p> <!-- Dynamically populated with username -->
         </div>
 
         <!-- Password -->
         <div class="account-box">
             <h2>Password</h2>
-            <p id="password">********</p> <!-- Dynamically populated with password (hidden) -->
+            <p id="password">Unknown</p> <!-- Dynamically populated with password (hidden) -->
         </div>
         <button id="edit-username" class="edit-btn">Edit Information</button>
-        
-        <!-- Delete Account Button -->
-        <button onclick="document.getElementById('deleteModal').style.display='block'" class="delete-btn">Delete Account</button>
+        <button id="delete-account-btn" onclick="openDeleteModal()">Delete Account</button> <!-- Delete Account Button -->
 
-        <!-- Delete Account Modal -->
-        <div id="deleteModal" class="modal">
-            <span onclick="document.getElementById('deleteModal').style.display='none'" class="close" title="Close Modal">&times;</span>
-            <div class="modal-content">
+        <!-- Modal for account deletion -->
+        <div id="id01" class="modal">
+            <span onclick="closeDeleteModal()" class="close" title="Close Modal">&times;</span>
+            <form class="modal-content">
                 <div class="container">
                     <h1>Delete Account</h1>
-                    <p>Are you sure you want to delete your account? This action cannot be undone.</p>
+                    <p>Are you sure you want to delete your account?</p>
+
                     <div class="clearfix">
-                        <button type="button" class="cancelbtn" onclick="document.getElementById('deleteModal').style.display='none'">Cancel</button>
-                        <button type="button" class="deletebtn" id="confirmDelete">Delete</button>
+                        <button type="button" class="cancelbtn" onclick="closeDeleteModal()">Cancel</button>
+                        <button type="button" id="deletebtn" class="deletebtn" onclick="deleteAccount()">Delete</button>
                     </div>
                 </div>
-            </div>
+            </form>
         </div>
-
+        
         <!-- Edit Form (Initially hidden) -->
         <div id="edit-form" class="edit-form" style="display: none;">
             <h3>Edit Information</h3>
+
+            <!-- Dynamic fields for username and password -->
             <label for="new-username">Username:</label>
             <input type="text" id="new-username" placeholder="Enter new username">
+
             <label for="new-password">Password:</label>
             <input type="password" id="new-password" placeholder="Enter new password">
+
             <button id="save-changes" class="save-btn">Save Changes</button>
             <button id="cancel-edit" class="cancel-btn">Cancel</button>
         </div>
     </div>
 
     <script src="account.js"></script> <!-- External JS for handling edits -->
-    
+
     <script>
-        // Show balance if user is a Buyer or Seller
-        const userRole = "Buyer"; // Replace with dynamic user role
+        // JavaScript to conditionally show the balance section
+        // You can dynamically fetch this value based on your application
+        const userRole = "Buyer"
+        // Set the role on the page (you can replace "Buyer" with the actual role)
         document.getElementById('user-role').textContent = userRole;
+
+        // Show the balance only for "Buyer" or "Seller"
         if (userRole === "Buyer" || userRole === "Seller") {
             document.getElementById('balance-section').style.display = "block";
         }
-
-    
-        
     </script>
 </body>
 </html>
