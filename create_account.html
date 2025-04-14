@@ -22,6 +22,7 @@
             params.append("password", password);
             params.append("accountType", accountType);
 
+            // Send the data to the backend to create the account
             let response = await fetch("http://localhost:4567/createAccount", {
                 method: "POST",
                 headers: {
@@ -32,6 +33,10 @@
 
             let result = await response.text();
             if (result === "Success") {
+                // If account creation is successful, store the username and role in localStorage
+                localStorage.setItem("username", username);
+                localStorage.setItem("role", accountType); // Store the account type as role
+
                 alert("Account Created!");
                 window.location.href = "login.html";  <!-- Redirect to login.html -->
             } else {
