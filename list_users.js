@@ -1,10 +1,10 @@
 document.addEventListener('DOMContentLoaded', function () {
     // Simulated list of users for the admin
     const users = [
-        { username: 'user1', role: 'Buyer', id:1 },
+        { username: 'user123', role: 'Buyer', id:1 },
         { username: 'user2', role: 'Seller', id:2 },
         { username: 'user3', role: 'Admin', id:3 },
-        { username: 'user4', role: 'Buyer', id:990914 },
+        { username: 'user4', role: 'Buyer', id:4 },
     ];
 
     // Get the container where users will be displayed
