@@ -141,9 +141,12 @@ public class Main {
     static class GetRoleHandler implements HttpHandler {
         @Override
         public void handle(HttpExchange exchange) throws IOException {
-            String username = exchange.getRequestURI().getQuery();
-            username = URLDecoder.decode(username, "UTF-8").split("=")[1];
-
+            String query = exchange.getRequestURI().getQuery();
+            String username = null;
+            if (query != null) {
+                username = URLDecoder.decode(query.split("=")[1], "UTF-8");
+            }
+    
             String response;
             try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS)) {
                 String role = getUserRole(conn, username);
@@ -156,10 +159,14 @@ public class Main {
                 e.printStackTrace();
                 response = "Database error";
             }
-
-            sendResponse(exchange, response);
+    
+            exchange.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
+            exchange.sendResponseHeaders(200, response.getBytes().length);
+            OutputStream os = exchange.getResponseBody();
+            os.write(response.getBytes());
+            os.close();
         }
-
+    
         private String getUserRole(Connection conn, String username) throws SQLException {
             String query = "SELECT role FROM users WHERE username = ?";
             try (PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -172,6 +179,8 @@ public class Main {
             }
         }
     }
+    
+    
 
     static class LoginHandler implements HttpHandler {
     @Override
