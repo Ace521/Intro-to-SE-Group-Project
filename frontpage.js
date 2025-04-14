@@ -1,46 +1,51 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const username = "currentLoggedInUser"; // Replace with actual logged-in user identifier
+    const username = localStorage.getItem("username") || "";
+    const storedRole = localStorage.getItem("role") || "";
     const dropdownList = document.getElementById("dropdown-list");
 
-    // Fetch the user's role
-    fetch(`/getRole?username=${encodeURIComponent(username)}`)
-        .then(response => response.text())
-        .then(role => {
-            // If the role is "Guest" or empty, show "User"
-            if (role === "" || role === "Guest") {
-                role = "User";
-            }
+    // Display role logic
+    if (!storedRole) {
+        // Fallback to fetch role from backend if not stored
+        fetch(`/getRole?username=${encodeURIComponent(username)}`)
+            .then(response => response.text())
+            .then(role => {
+                role = role.trim() || "User"; // Set default role to "User"
+                updateRoleUI(role);
+                localStorage.setItem("role", role); // Store the role in localStorage
+            })
+            .catch(error => {
+                console.error("Error fetching role:", error);
+                updateRoleUI("User");
+            });
+    } else {
+        updateRoleUI(storedRole);
+    }
 
-            // Set the role in the welcome message
-            document.getElementById("user-role").textContent = role;
+    function updateRoleUI(role) {
+        document.getElementById("user-role").textContent = role;
 
-            // Dynamically populate the dropdown menu based on user role
-            // Only show the "Account" menu item if the user is not a guest
-            if (role !== "User") {
-                createMenuItem("Account", "account.html");
-            }
+        // Clear previous items in dropdown
+        dropdownList.innerHTML = '';
 
-            // Based on role, show different menu items
-            if (role === "Admin" || role == "admin") {
-                createMenuItem("Admin Dashboard", "admin_dashboard.html");
-                createMenuItem("Log Out", "#", "logout-btn");
-            } else if (role === "Seller" || role == "seller") {
-                createMenuItem("Your Products", "seller_products.html");
-                createMenuItem("Log Out", "#", "logout-btn");
-            } else if (role === "Buyer" || role == "buyer") {
-                createMenuItem("Log Out", "#", "logout-btn");
-                showAddToCartButton(true);  // Show "Add to Cart" button for buyers
-            } else {
-                createMenuItem("Home", "index.html");
-            }
-        })
-        .catch(error => {
-            console.error("Error fetching role:", error);
-            // Fallback if there is an error, display "User" role in the welcome message
-            document.getElementById("user-role").textContent = "User";
-        });
+        if (role !== "User") {
+            createMenuItem("Account", "account.html");
+        }
 
-    // Function to create menu items for the dropdown
+        if (role.toLowerCase() === "admin") {
+            createMenuItem("Admin Dashboard", "admin_dashboard.html");
+            document.getElementById("admin-buttons").style.display = "block";
+        } else if (role.toLowerCase() === "seller") {
+            createMenuItem("Your Products", "seller_products.html");
+            document.getElementById("seller-button").style.display = "block";
+        } else if (role.toLowerCase() === "buyer") {
+            showAddToCartButton(true);
+        } else {
+            createMenuItem("Home", "index.html");
+        }
+
+        createMenuItem("Log Out", "#", "logout-btn");
+    }
+
     function createMenuItem(text, link = "#", className = "") {
         const li = document.createElement("li");
         const a = document.createElement("a");
@@ -51,7 +56,6 @@ document.addEventListener("DOMContentLoaded", function () {
         dropdownList.appendChild(li);
     }
 
-    // Function to show the "Add to Cart" button
     function showAddToCartButton(show) {
         const productCards = document.querySelectorAll('.product-card');
         productCards.forEach(card => {
@@ -64,32 +68,29 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Toggle the dropdown menu visibility when the hamburger menu is clicked
-    window.toggleMenu = function() {
+    window.toggleMenu = function () {
         const dropdownMenu = document.getElementById('dropdown-menu');
         dropdownMenu.classList.toggle('show');
     };
 
-    // Handle logout
-    document.body.addEventListener("click", function(event) {
+    document.body.addEventListener("click", function (event) {
         if (event.target && event.target.classList.contains("logout-btn")) {
-            fetch("/logout", { method: "POST" })  // Assuming the backend handles the POST request for logging out
+            fetch("/logout", { method: "POST" })
                 .then(response => response.text())
                 .then(responseText => {
-                    alert(responseText);  // Optionally show a logout message
-                    window.location.href = "index.html";  // Redirect to the home page after logout
+                    localStorage.clear();
+                    alert(responseText);
+                    window.location.href = "index.html";
                 })
                 .catch(error => console.error("Error logging out:", error));
         }
     });
 
-    // Handle search
-    document.getElementById("search-form").addEventListener("submit", function(event) {
+    document.getElementById("search-form").addEventListener("submit", function (event) {
         event.preventDefault();
         const searchTerm = document.getElementById('search-input').value.trim();
-        if (!searchTerm) {
-            return;
-        }
+        if (!searchTerm) return;
+
         const searchResults = simulateSearch(searchTerm);
         if (searchResults.length === 0) {
             window.location.href = "search_fail.html";
@@ -98,13 +99,11 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    // Simulate a search function (replace with actual search logic)
     function simulateSearch(searchTerm) {
         const items = ["Laptop", "Phone", "Tablet", "Headphones"];
         return items.filter(item => item.toLowerCase().includes(searchTerm.toLowerCase()));
     }
 
-    // Fetch and display products
     fetch("/getProducts")
         .then(response => response.json())
         .then(products => {
