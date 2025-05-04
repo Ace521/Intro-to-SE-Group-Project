@@ -20,7 +20,9 @@
             </a>
         </div>
     
-        <!-- Search Bar -->
+
+    <!-- Search Bar -->
+    
         <div class="search-container">
             <center>
                 <form class="search" id="search-form" onsubmit="handleSearch(event)">
@@ -29,22 +31,24 @@
                 </form>
             </center>
         </div>
+    
 
-        <!-- Hamburger Menu -->
-        <div class="hamburger-menu" onclick="toggleMenu()">
-            <div class="line"></div>
-            <div class="line"></div>
-            <div class="line"></div>
-        </div>
-        
-        <!-- Dropdown Menu -->
-        <div id="dropdown-menu" class="dropdown-menu">
-            <ul id="dropdown-list">
-                <!-- Items will be added dynamically here based on user role -->
-            </ul>
-        </div>
+    <!-- Hamburger Menu -->
+    <div class="hamburger-menu" onclick="toggleMenu()">
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+    </div>
+    
+    <!-- Dropdown Menu -->
+    <div id="dropdown-menu" class="dropdown-menu">
+        <ul id="dropdown-list">
+            
+        </ul>
+    </div>
 
-        <!-- Welcome Message -->
+    <!-- Welcome Message -->
+    
         <div class="welcome-message">
             Welcome, <span class="user-role" id="user-role">User</span>
         </div>
@@ -68,12 +72,9 @@
     </div>
 
     <!-- Products Container -->
-    <div class="products-container" id="products-container">
-        <!-- Products will be dynamically loaded here -->
-    </div>
+    <div class="products-container" id="products-container"></div>
 
     <script src="frontpage.js"></script>
 
 </body>
 </html>
-
