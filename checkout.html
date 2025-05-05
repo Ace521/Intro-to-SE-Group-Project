@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shopping Cart</title>
+    <title>Checkout</title>
     <link rel="stylesheet" href="cart.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
@@ -23,20 +23,15 @@
         <div class="cart-header">
             <h1>Your Shopping Cart</h1>
         </div>
-        <div id="cart-message" class="cart-message">
-            <p>No items in your cart.</p>
-        </div>
         <div id="cart-items" class="cart-items">
-            <!-- Cart items will be displayed here -->
+            <!-- Product details will be displayed here -->
         </div>
-        <div id="checkout-section" class="checkout-section">
-            <!-- Checkout button will be shown if there are items in the cart -->
+        <div class="checkout-section">
+            <button id="checkout-button">Checkout</button>
         </div>
-        <div class="return-home">
-            <button onclick="window.location.href='frontpage.html';">Return to Home</button>
-        </div>
+        
     </div>
 
-    <script src="cart.js"></script>
+    <script src="checkout.js"></script>
 </body>
 </html>

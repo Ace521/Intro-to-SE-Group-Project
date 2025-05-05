@@ -1,80 +1,88 @@
 let cart = [];
 
+// Simulated product data
+const productData = {
+    id: 3,
+    name: "Stool",
+    description: "This is a barstool",
+    image: "Product 3.jpg",
+    price: 125.00
+};
+
 // Function to add an item to the cart
-function addItemToCart() {
-    const newItem = {
-        id: cart.length + 1,
-        name: `Item ${cart.length + 1}`,
-        price: (Math.random() * 100).toFixed(2),
-    };
+function addItemToCart(productId) {
+    const existingItem = cart.find(item => item.id === productId);
+    if (existingItem) {
+        existingItem.quantity++;
+    } else {
+        cart.push({ ...productData, quantity: 1 });
+    }
+    localStorage.setItem("cart", JSON.stringify(cart));
+    updateCart();
+}
 
-    // Add item to the cart array
-    cart.push(newItem);
+// Function to remove an item from the cart
+function removeItemFromCart(productId) {
+    cart = cart.filter(item => item.id !== productId);
+    localStorage.setItem("cart", JSON.stringify(cart));
+    updateCart();
+}
 
-    // Update the cart display
+// Function to clear the cart
+function clearCart() {
+    cart = [];
+    localStorage.setItem("cart", JSON.stringify(cart));
     updateCart();
 }
 
 // Function to update the cart display
 function updateCart() {
-    const cartMessage = document.getElementById("cart-message");
     const cartItemsContainer = document.getElementById("cart-items");
+    const cartMessage = document.getElementById("cart-message");
     const checkoutSection = document.getElementById("checkout-section");
+    const cartCount = document.getElementById("cart-count");
 
-    // Clear current cart items and message
     cartItemsContainer.innerHTML = "";
     checkoutSection.innerHTML = "";
 
-    // Show or hide the empty cart message
-    if (cart.length == 0) {
+    if (cart.length === 0) {
         cartMessage.style.display = "block";
-        // Redirect to homepage if cart is empty
-        setTimeout(function() {
-            window.location.href = "index.html"; // Redirect to the homepage after 2 seconds
-        }, 2000); // 2 seconds delay to let the message show
+        cartCount.textContent = 0;
     } else {
         cartMessage.style.display = "none";
-        // Display cart items
+        cartCount.textContent = cart.reduce((total, item) => total + item.quantity, 0);
+
+        let totalPrice = 0;
+
         cart.forEach(item => {
             const itemDiv = document.createElement("div");
             itemDiv.classList.add("cart-item");
             itemDiv.innerHTML = `
-                <span>${item.name}</span>
-                <span>$${item.price}</span>
+                <img src="${item.image}" alt="${item.name}" class="cart-item-image">
+                <div class="cart-item-details">
+                    <span class="cart-item-name">${item.name}</span>
+                    <span class="cart-item-description">${item.description}</span>
+                    <span class="cart-item-price">$${item.price.toFixed(2)}</span>
+                    <span class="cart-item-quantity">Quantity: ${item.quantity}</span>
+                    <button onclick="removeItemFromCart(${item.id})">Remove</button>
+                </div>
             `;
             cartItemsContainer.appendChild(itemDiv);
+            totalPrice += item.price * item.quantity;
         });
 
-        // Display checkout button if items are in the cart
         const checkoutButton = document.createElement("button");
-        checkoutButton.classList.add("checkout-button");
-        checkoutButton.textContent = "Proceed to Checkout";
-        checkoutButton.onclick = function() {
-            window.location.href = "checkout.html"; // Redirect to checkout page
+        checkoutButton.textContent = "Checkout";
+        checkoutButton.onclick = () => {
+            clearCart();
+            alert("Checkout complete!");
         };
-
         checkoutSection.appendChild(checkoutButton);
     }
 }
-function toggleMenu() {
-    const menu = document.getElementById('dropdown-menu');
-    menu.classList.toggle('show');
-}
-function logout() {
-    fetch('/logout', {
-        method: 'POST',
-        credentials: 'include'
-    })
-    .then(res => res.json())
-    .then(data => {
-        if (data.success) {
-            window.location.href = 'login.html'; // Redirect to login page
-        } else {
-            alert('Logout failed!');
-        }
-    })
-    .catch(err => {
-        console.error('Logout error:', err);
-    });
-}
 
+// Initialize cart on page load
+window.onload = function() {
+    cart = JSON.parse(localStorage.getItem("cart")) || [];
+    updateCart();
+};
